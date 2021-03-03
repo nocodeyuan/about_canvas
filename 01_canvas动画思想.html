@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>01_canvas动画思想</title>
+    <style>
+      #myCanvas {
+        border: 1px solid #000;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas width="400" height="400" id="myCanvas">
+      当前浏览器不支持，请升级当前浏览器哦版本！
+    </canvas>
+    <script>
+      //获取画布
+      var canvas = document.getElementById("myCanvas");
+      //获取画布2d上下文
+      var ctx = canvas.getContext("2d");
+      //设置绘制图形的颜色
+      ctx.fillStyle = "blue";
+      //信号量
+      var left = 100;
+      var timer = setInterval(function () {
+        //按顺序，清除-更新-渲染
+        ctx.clearRect(0, 0, 400, 400);
+        left++;
+        ctx.fillRect(left, 100, 100, 50);
+      });
+    </script>
+  </body>
+</html>

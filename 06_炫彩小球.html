@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>06_炫彩小球</title>
+    <style>
+      #myCanvas {
+        display: block;
+        margin: 10px auto;
+        border: 1px solid #000;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas width="600" height="400" id="myCanvas">
+      当前浏览器不支持，请升级当前浏览器哦版本！
+    </canvas>
+    <script>
+      // 获取画布
+      var canvas = document.getElementById("myCanvas");
+      var ctx = canvas.getContext("2d");
+
+      // 存放小球路径图的数组
+      var ballArr = [];
+
+      /**
+       * @constructor 球类
+       * @arguments
+       *    x，y为圆弧起始坐标，r为圆半径,color为填充色，offX为X轴偏移量，offY为Y轴偏移量。
+       *    将创建的小球放入数组中等待渲染
+       * */
+      function Ball(x, y, r) {
+        this.x = x;
+        this.y = y;
+        this.r = r;
+        this.color = getRandomColor();
+        this.offX = (parseInt(Math.random() * 10) - 5) * 2;
+        this.offY = (parseInt(Math.random() * 10) - 5) * 2;
+        ballArr.push(this);
+      }
+
+      // 获取随机颜色
+      function getRandomColor() {
+        var str = "0,1,2,3,4,5,6,7,8,9,a,b,c,d,e,f";
+        var strArr = str.split(",");
+        var _color = "#";
+        for (var i = 0; i < 6; i++) {
+          _color += strArr[parseInt(strArr.length * Math.random())];
+        }
+        return _color;
+      }
+
+      // 更新小球状态
+      Ball.prototype.update = function () {
+        this.x += this.offX;
+        this.y += this.offY;
+        this.r -= 8;
+      };
+
+      // 渲染
+      Ball.prototype.render = function () {
+        ctx.beginPath();
+        // console.log(this.x, this.y, this.r, this.color);
+        ctx.arc(this.x, this.y, this.r, 0, 2 * Math.PI, false);
+        ctx.fillStyle = this.color;
+        ctx.fill();
+      };
+
+      // 监听鼠标位置，创建小球。
+      canvas.addEventListener("mousemove", function (e) {
+        new Ball(e.offsetX, e.offsetY, 30);
+        console.log(ballArr.length);
+      });
+
+      // main
+      setInterval(function () {
+        if (ballArr.length > 0) {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          for (var i = 0; i < ballArr.length; i++) {
+            var _this = ballArr[i];
+            _this.update();
+            if (_this.r < 0) {
+              ballArr.splice(i, 1);
+              continue;
+            }
+            _this.render();
+          }
+        }
+      }, 50);
+    </script>
+  </body>
+</html>

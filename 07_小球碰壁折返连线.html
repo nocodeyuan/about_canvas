@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>07_小球碰壁折返</title>
+    <style>
+      * {
+        padding: 0;
+        margin: 0;
+      }
+
+      #myCanvas {
+        display: block;
+        margin: 10px auto;
+        border: 1px solid #000;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas width="800" height="400" id="myCanvas">
+      当前浏览器不支持，请升级当前浏览器版本！
+    </canvas>
+    <script>
+      // 获取画布
+      var canvas = document.getElementById("myCanvas");
+      var ctx = canvas.getContext("2d");
+      // 小球容器
+      var ballArr = [];
+
+      function Ball() {
+        this.r = 10;
+        this.x = parseInt(Math.random() * (canvas.width - 40)) + 20;
+        this.y = parseInt(Math.random() * (canvas.height - 40)) + 20;
+        this.color = getColor();
+        // 偏移
+        this.offX = parseInt(Math.random() * 10) - 5;
+        this.offY = parseInt(Math.random() * 10) - 5;
+        ballArr.push(this);
+        //小球在数组中的索引，用于单向连线逻辑
+        this.index = ballArr.length - 1;
+      }
+
+      // 更新函数
+      Ball.prototype.update = function () {
+        this.x += this.offX;
+        this.y += this.offY;
+        if (this.x < this.r || this.x > canvas.width - 10) {
+          this.offX = -this.offX;
+        }
+        if (this.y < this.r || this.y > canvas.height - 10) {
+          this.offY = -this.offY;
+        }
+      };
+
+      // 渲染函数
+      Ball.prototype.render = function () {
+        // 渲染小球
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2, false);
+        // console.log(this.x, this.y, this.r);
+        ctx.globalAlpha = 1;
+        ctx.fillStyle = this.color;
+        ctx.fill();
+
+        // 连线逻辑
+        for (var a = this.index; a < ballArr.length; a++) {
+          if (
+            Math.abs(this.x - ballArr[a].x) < 100 &&
+            Math.abs(this.y - ballArr[a].y) < 100
+          ) {
+            ctx.moveTo(ballArr[a].x, ballArr[a].y);
+            ctx.lineTo(this.x, this.y);
+            ctx.closePath();
+            ctx.strokeStyle = ballArr[a].color;
+            ctx.globalAlpha =
+              36 /
+              parseInt(
+                Math.sqrt(
+                  Math.pow(this.x - ballArr[a].x, 2) +
+                    Math.pow(this.y - ballArr[a].y, 2)
+                )
+              );
+            ctx.stroke();
+          }
+        }
+      };
+
+      // 随机颜色
+      function getColor() {
+        var str = "0,1,2,3,4,5,6,7,8,9,a,b,c,d,e,f";
+        var strArr = str.split(",");
+        var _color = "#";
+        for (var i = 0; i < 6; i++) {
+          _color += strArr[parseInt(strArr.length * Math.random())];
+        }
+        return _color;
+      }
+
+      // 创建小球
+      for (let i = 0; i < 26; i++) {
+        new Ball();
+      }
+
+      // main
+      setInterval(function () {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        for (var j = 0; j < ballArr.length; j++) {
+          ballArr[j].update();
+          // console.log(ballArr[j]);
+          ballArr[j].render();
+        }
+      }, 20);
+    </script>
+  </body>
+</html>

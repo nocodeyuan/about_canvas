@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>05_canvas绘制圆弧</title>
+    <style>
+      #myCanvas {
+        border: 1px solid #000;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas width="600" height="400" id="myCanvas">
+      当前浏览器不支持，请升级当前浏览器哦版本！
+    </canvas>
+    <script>
+      //获取画布
+      var canvas = document.getElementById("myCanvas");
+      var ctx = canvas.getContext("2d");
+
+      // 创建一个路径
+      ctx.beginPath();
+
+      /**
+       * 参数(x轴位置，y轴位置，圆半径，圆弧的起点弧度，圆弧的终点弧度，false为顺时针)
+       * 圆周长为 2 * Math.PI ，大约 7 个弧度。
+       **/
+      ctx.arc(200, 200, 120, 0, 2 * Math.PI, false);
+      ctx.strokeStyle = "red";
+      ctx.stroke();
+    </script>
+  </body>
+</html>

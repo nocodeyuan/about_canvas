@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>04_canvas绘制路径</title>
+    <style>
+      #myCanvas {
+        border: 1px solid #000;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas width="600" height="400" id="myCanvas">
+      当前浏览器不支持，请升级当前浏览器哦版本！
+    </canvas>
+    <script>
+      //获取画布
+      var canvas = document.getElementById("myCanvas");
+      var ctx = canvas.getContext("2d");
+
+      // 创建一个路径
+      ctx.beginPath();
+
+      // 移动起始点
+      ctx.moveTo(20, 10);
+
+      // 描述行进路径
+      ctx.lineTo(200, 135);
+      ctx.lineTo(2, 15);
+      ctx.lineTo(50, 12);
+      ctx.lineTo(478, 247);
+      ctx.lineTo(600, 325);
+
+      // 封闭路径
+      ctx.closePath();
+
+      // 绘制或填充
+      ctx.fillStyle = "green";
+      ctx.fill();
+      // ctx.strokeStyle = "red";
+      // ctx.stroke();
+    </script>
+  </body>
+</html>
